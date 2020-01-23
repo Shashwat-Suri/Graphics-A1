@@ -78,7 +78,7 @@ var magicPosition = {type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0)};
 // MATERIALS: specifying uniforms and shaders
 var wizardMaterial = new THREE.ShaderMaterial();
 var itemMaterial = new THREE.ShaderMaterial();
-var magicMaterial = new THREE.ShaderMaterial({ 
+var magicMaterial = new THREE.ShaderMaterial({
 	side: THREE.DoubleSide,
 	uniforms: {
     colorMap: colorMap,
@@ -145,7 +145,7 @@ function loadOBJ(file, material, scale, xOff, yOff, zOff, xRot, yRot, zRot) {
 
 // LOAD WIZARD & WIZARD HAT
 loadOBJ('obj/wizard.obj', wizardMaterial, 1.0, 0.0, 0.0, -8.0, 0.0, 0.0, 0.0);
-loadOBJ('obj/hat.obj', wizardMaterial, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0 * Math.PI/2, 0.0);
+loadOBJ('obj/hat.obj', wizardMaterial, 1.0, 0.0, 10.0, -8.0, 0.0, -1.0 * Math.PI/2, 0.0);
 
 // CREATE MAGIC CIRCLE
 // https://threejs.org/docs/#api/en/geometries/PlaneGeometry
@@ -186,9 +186,9 @@ scene.add(pyramid);
 var keyboard = new THREEx.KeyboardState();
 function checkKeyboard() {
   if (keyboard.pressed("W"))
-    magicPosition.value.z -= 0.3;
+    magicPosition.value.y -= 0.3;
   else if (keyboard.pressed("S"))
-    magicPosition.value.z += 0.3;
+    magicPosition.value.y += 0.3;
 
   if (keyboard.pressed("A"))
     magicPosition.value.x -= 0.3;

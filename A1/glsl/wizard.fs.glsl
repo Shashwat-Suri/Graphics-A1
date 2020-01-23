@@ -14,13 +14,14 @@ out vec4 out_FragColor;
 in vec3 interpolatedNormal;
 
 void main() {
-	
+
 	// The direction of the light (normalized) is important for calculating shading that results from light hitting an object
   	vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
 
-  	// HINT: GLSL PROVIDES THE DOT() FUNCTION 
+  	// HINT: GLSL PROVIDES THE DOT() FUNCTION
   	// HINT: SHADING IS CALCUATED BY TAKING THE DOT PRODUCT OF THE NORMAL AND LIGHT DIRECTION VECTORS
 
  	// Set final rendered color to red
-  	out_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // REPLACE ME
+		float dotproduct = dot(lightDirection,interpolatedNormal);
+  	out_FragColor = vec4(dotproduct,dotproduct,dotproduct, 1.0); // REPLACE ME
 }
