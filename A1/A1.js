@@ -74,6 +74,8 @@ magicTexture.minFilter = THREE.LinearFilter;
 // UNIFORMS
 var colorMap = {type: 't', value: magicTexture};
 var magicPosition = {type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0)};
+var magicCircleAnimation = {type: 'f', value: 5.0};
+var flag = {type: 'f', value: 1.0};
 
 // MATERIALS: specifying uniforms and shaders
 var wizardMaterial = new THREE.ShaderMaterial();
@@ -83,6 +85,7 @@ var magicMaterial = new THREE.ShaderMaterial({
 	uniforms: {
     colorMap: colorMap,
     magicPosition: magicPosition,
+    flag:flag
   }
 });
 
@@ -192,8 +195,43 @@ function checkKeyboard() {
 
   if (keyboard.pressed("A"))
     magicPosition.value.x -= 0.3;
-  else if (keyboard.pressed("D"))
+  if (keyboard.pressed("D"))
     magicPosition.value.x += 0.3;
+  else if(keyboard.pressed(" ") && flag.value === 1.0){
+    flag.value = 0.0;
+    setTimeout(function(){
+      magicCircleAnimation.value = 1.0 + Math.round(Math.random() * 2.0);  // picks a number between 1 and 3
+      console.log(magicCircle.position);
+      if(magicCircleAnimation.value === 1.0){
+        console.log("sphere");
+        var sphere = new THREE.Mesh(sphereGeometry, itemMaterial);
+        sphere.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
+        sphere.scale.set(1.0, 1.0, 1.0);
+        sphere.parent = worldFrame;
+        scene.add(sphere);
+      }
+      else if(magicCircleAnimation.value === 2.0){
+        console.log("torus");
+        var torus = new THREE.Mesh(torusGeometry, itemMaterial);
+        torus.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
+        torus.scale.set(1.0, 1.0, 1.0);
+        torus.rotation.x = Math.PI / 2.0;
+        torus.parent = worldFrame;
+        scene.add(torus);
+      }
+      else{
+        console.log("pyramid");
+        var pyramid = new THREE.Mesh(pyramidGeometry, itemMaterial);
+        pyramid.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
+        pyramid.scale.set(1.0, 1.0, 1.0);
+        pyramid.parent = worldFrame;
+        scene.add(pyramid);
+      }
+      flag.value =1.0;
+    },1000);
+
+  }
+
 
   wizardMaterial.needsUpdate = true; // Tells three.js that some uniforms might have changed
   itemMaterial.needsUpdate = true;
