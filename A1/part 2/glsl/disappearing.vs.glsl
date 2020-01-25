@@ -10,7 +10,6 @@ void main() {
     // then the view matrix to get the position in the camera coordinate system,
     // and finally the projection matrix to get final vertex position
     //y = fract(sin(x)*1.0);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
 
 }

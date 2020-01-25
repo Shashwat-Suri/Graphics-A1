@@ -14,7 +14,8 @@ in vec3 interpolatedNormal;
 
 void main() {
   vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
+
   // Set constant color red
-  out_FragColor = vec4(interpolatedNormal[0],interpolatedNormal[1],interpolatedNormal[2], 1.0); // REPLACE ME
+  out_FragColor = vec4(interpolatedNormal[0],interpolatedNormal[1],interpolatedNormal[2], 0.0); // REPLACE ME
 
 }

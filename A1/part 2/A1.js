@@ -233,44 +233,57 @@ function checkKeyboard() {
       var distpyramid = distanceVector(magicPosition.value,pyramid.position);
       var distsphere = distanceVector(magicPosition.value,sphere.position);
       var disttorus = distanceVector(magicPosition.value,torus.position);
-      console.log("circle:"+magicPosition.value.z);
-      console.log("sphere:"+distsphere);
-      console.log("pyramid:"+distpyramid);
-      console.log("torus:"+disttorus);
+      // console.log("circle x:"+magicPosition.value.x+"y:"+magicPosition.value.y);
+      // console.log("sphere x:"+sphere.position.x+ "z:"+sphere.position.z);
+      // console.log("pyramid x:"+pyramid.position.x+ "z:"+pyramid.position.z);
+      // console.log("torus x:"+torus.position.x+ "z:"+torus.position.z);
 
       //eat time
       if(eatspit.value == 0.0){
         if(distsphere <= 2.0 || disttorus <= 2.0 || distpyramid <= 2.0 ){
           //eat sphere
           if(distsphere<=disttorus && distsphere<=distpyramid){
-            objecttype.value == 0.0
+            objecttype.value = 0.0
             sphere.material = disappearingMaterial;
           }
           //eat pyramid
           else if(distpyramid<=disttorus && distpyramid<=distsphere){
-            objecttype.value == 1.0
+            objecttype.value = 1.0
             pyramid.material = disappearingMaterial;
           }
           //eat torus
           else{
-            objecttype.value == 2.0
+            objecttype.value = 2.0
             torus.material = disappearingMaterial;
           }
           eatspit.value = 1.0;
         }
         //nothing should be eaten
         else{
-          objecttype.value == 3.0
+          objecttype.value = 3.0
+          eatspit.value = 0.0
         }
 
 
       }
       //spit time
       else{
-        if(objecttype == 3.0){
+        if(objecttype.value == 3.0){
           console.log("nothing to spit");
+          eatspit.value = 0.0;
         }else{
-
+          if(objecttype.value == 0.0){
+            sphere.material = itemMaterial;
+            sphere.position.set(magicPosition.value.x,1.0,magicPosition.value.y)
+          }else if(objecttype.value == 1.0){
+            pyramid.material = itemMaterial;
+            pyramid.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
+          }else{
+            torus.material = itemMaterial;
+            torus.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
+          }
+          eatspit.value = 0.0;
+          objecttype.value = 3.0;
         }
 
       }
@@ -328,10 +341,9 @@ function checkrotate(){
 function distanceVector( v1, v2 )
 {
     var dx = v1.x - v2.x;
-    var dy = v1.y - 6.0 - v2.y;
-    var dz = v1.z - v2.z;
+    var dy = v1.y - v2.z;
 
-    return Math.sqrt( dx * dx + dy * dy );
+    return Math.sqrt( dx * dx + dy * dy);
 }
 
 update();
