@@ -11,6 +11,7 @@ if ( WEBGL.isWebGL2Available() === false ) {
 // SETUP RENDERER & SCENE
 var container = document.createElement( 'div' );
 document.body.appendChild( container );
+var flag2 =0.0;
 
 var canvas = document.createElement("canvas");
 var context = canvas.getContext( 'webgl2' );
@@ -111,9 +112,7 @@ var shaderFiles = [
 'glsl/magic.vs.glsl',
 'glsl/magic.fs.glsl',
 'glsl/disappearing.vs.glsl',
-'glsl/disappearing.fs.glsl',
-'glsl/rotating.vs.glsl',
-'glsl/rotating.fs.glsl'
+'glsl/disappearing.fs.glsl'
 ];
 
 new THREE.SourceLoader().load(shaderFiles, function(shaders) {
@@ -125,9 +124,6 @@ new THREE.SourceLoader().load(shaderFiles, function(shaders) {
 
   magicMaterial.vertexShader = shaders['glsl/magic.vs.glsl'];
   magicMaterial.fragmentShader = shaders['glsl/magic.fs.glsl'];
-
-  rotatingMaterial.vertexShader = shaders['glsl/rotating.vs.glsl'];
-  rotatingMaterial.fragmentShader = shaders['glsl/rotating.fs.glsl'];
 
   disappearingMaterial.vertexShader = shaders['glsl/disappearing.vs.glsl'];
   disappearingMaterial.fragmentShader = shaders['glsl/disappearing.fs.glsl'];
@@ -225,6 +221,19 @@ function checkKeyboard() {
     magicPosition.value.x -= 0.3;
   if (keyboard.pressed("D"))
     magicPosition.value.x += 0.3;
+
+
+  if(keyboard.pressed("R")){
+    flag2 = 1.0;
+
+
+  }
+
+  if (keyboard.pressed("N")){
+    flag2 = 0.0;
+  }
+
+
   else if(keyboard.pressed(" ") && flag.value === 1.0){
     flag.value = 0.0;
     setTimeout(function(){
@@ -290,31 +299,7 @@ function checkKeyboard() {
 
 
       console.log(magicCircle.position);
-      // if(magicCircleAnimation.value === 1.0){
-      //   console.log("sphere");
-      //   var sphere = new THREE.Mesh(sphereGeometry, itemMaterial);
-      //   sphere.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
-      //   sphere.scale.set(1.0, 1.0, 1.0);
-      //   sphere.parent = worldFrame;
-      //   scene.add(sphere);
-      // }
-      // else if(magicCircleAnimation.value === 2.0){
-      //   console.log("torus");
-      //   var torus = new THREE.Mesh(torusGeometry, itemMaterial);
-      //   torus.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
-      //   torus.scale.set(1.0, 1.0, 1.0);
-      //   torus.rotation.x = Math.PI / 2.0;
-      //   torus.parent = worldFrame;
-      //   scene.add(torus);
-      // }
-      // else{
-      //   console.log("pyramid");
-      //   var pyramid = new THREE.Mesh(pyramidGeometry, itemMaterial);
-      //   pyramid.position.set(magicPosition.value.x,1.0,magicPosition.value.y); // to be updated
-      //   pyramid.scale.set(1.0, 1.0, 1.0);
-      //   pyramid.parent = worldFrame;
-      //   scene.add(pyramid);
-      // }
+
       flag.value =1.0;
     },1000);
 
@@ -329,13 +314,23 @@ function checkKeyboard() {
 // SETUP UPDATE CALL-BACK
 function update() {
   checkKeyboard();
-  checkrotate();
+  if(flag2 == 1.0)
+    rotate();
   requestAnimationFrame(update); // Requests the next update call, this creates a loop
   renderer.render(scene, camera);
 }
 
-function checkrotate(){
-
+function rotate(){
+    var SPEED = 0.01;
+    sphere.rotation.x -= SPEED * 2;
+    sphere.rotation.y -= SPEED;
+    sphere.rotation.z -= SPEED * 3;
+    pyramid.rotation.x -= SPEED * 2;
+    pyramid.rotation.y -= SPEED;
+    pyramid.rotation.z -= SPEED * 3;
+    torus.rotation.x -= SPEED * 2;
+    torus.rotation.y -= SPEED;
+    torus.rotation.z -= SPEED * 3;
 }
 
 function distanceVector( v1, v2 )
@@ -345,5 +340,6 @@ function distanceVector( v1, v2 )
 
     return Math.sqrt( dx * dx + dy * dy);
 }
+
 
 update();
